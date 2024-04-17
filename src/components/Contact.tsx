@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid';
+import { EnvelopeIcon, PhoneIcon, TrashIcon } from '@heroicons/react/20/solid';
+
 
 // Define el tipo de datos para una persona
 interface Person {
@@ -92,6 +93,13 @@ export default function Contact() {
         });
     };
 
+    const deletePerson = (index: number) => {
+        const updatedPeople = [...people];
+        updatedPeople.splice(index, 1);
+        setPeople(updatedPeople);
+        localStorage.setItem('people', JSON.stringify(updatedPeople));
+    };
+
     return (
         <div>
             <div className="sm:flex sm:items-center mb-6">
@@ -125,6 +133,13 @@ export default function Contact() {
                                 </div>
                                 <p className="mt-1 truncate text-sm text-gray-500">{person.title}</p>
                             </div>
+                            <button
+                                type="button"
+                                onClick={() => deletePerson(index)}
+                                className="text-red-600 hover:text-red-900"
+                            >
+                                <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                            </button>
                         </div>
                         <div>
                             <div className="-mt-px flex divide-x divide-gray-200">
