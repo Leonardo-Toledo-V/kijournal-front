@@ -211,7 +211,7 @@ export default function HomePage() {
                                                     {category.featured.map((item) => (
                                                         <div key={item.name} className="group relative">
                                                             <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-md bg-gray-100 group-hover:opacity-75">
-                                                                <img src={item.imageSrc} alt={item.imageAlt} className="object-cover object-center" />
+                                                                <Image width={500} height={500} src={item.imageSrc} alt={item.imageAlt} className="object-cover object-center" />
                                                             </div>
                                                             <a href={item.href} className="mt-6 block text-sm font-medium text-gray-900">
                                                                 <span className="absolute inset-0 z-10" aria-hidden="true" />
@@ -303,7 +303,8 @@ export default function HomePage() {
                                                                                 {category.featured.map((item) => (
                                                                                     <div key={item.name} className="group relative">
                                                                                         <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-md bg-gray-100 group-hover:opacity-75">
-                                                                                            <img
+                                                                                            <Image
+                                                                                                width={500} height={500}
                                                                                                 src={item.imageSrc}
                                                                                                 alt={item.imageAlt}
                                                                                                 className="object-cover object-center"
@@ -422,7 +423,7 @@ export default function HomePage() {
                                     <div>
                                         <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-lg">
                                             <div className="absolute inset-0 overflow-hidden group-hover:opacity-75">
-                                                <img
+                                                <Image width={500} height={500}
                                                     src={collection.imageSrc}
                                                     alt={collection.imageAlt}
                                                     className="h-full w-full object-cover"
@@ -457,7 +458,7 @@ export default function HomePage() {
                                 >
                                     <div className="md:flex-shrink-0">
                                         <div className="flow-root">
-                                            <img className="-my-1 mx-auto h-16 w-auto" src={perk.imageUrl} alt="" />
+                                            <Image width={500} height={500} className="-my-1 mx-auto h-16 w-auto" src={perk.imageUrl} alt="" />
                                         </div>
                                     </div>
                                     <div className="mt-6 md:mt-0 md:ml-4 lg:mt-6 lg:ml-0">
@@ -480,7 +481,8 @@ export default function HomePage() {
                         <div className="grid grid-cols-1 md:grid-flow-col md:auto-rows-min md:grid-cols-12 md:gap-x-8 md:gap-y-16">
 
                             <div className="col-span-1 md:col-span-2 lg:col-start-1 lg:row-start-1">
-                                <img
+                                <Image
+                                    width={500} height={500}
                                     src="kiwi.png"
                                     alt=""
                                     className="h-16 w-auto"
