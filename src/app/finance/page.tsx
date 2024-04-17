@@ -11,8 +11,9 @@ import {
 } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
+import Finances from '@/components/Finances'
+import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
-import Page404 from '../Page404/page'
 
 const navigation = [
     { name: 'Inventario', href: '/inventory', icon: ArchiveBoxIcon, current: false },
@@ -22,13 +23,23 @@ const navigation = [
 
 export default function page() {
     const router = useRouter();
-    const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const isLogged = localStorage.getItem("userLogged");
+    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
 
-    if (!isLogged) {
-        return <Page404/>
+    const user = localStorage.getItem("userLogged");
+
+    const userLogged = JSON.parse(user || "{}");
+
+    if (userLogged.email === undefined) { return <div>Debes iniciar sesión</div> }
+
+    const handleLogout = () => {
+        localStorage.removeItem("userLogged");
+        setTimeout(() => {
+            router.push("/")
+        }, 1000);
     }
+
+
 
     return (
         <div className='h-screen'>
@@ -46,7 +57,6 @@ export default function page() {
                         >
                             <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
                         </Transition.Child>
-
                         <div className="fixed inset-0 z-40 flex">
                             <Transition.Child
                                 as={Fragment}
@@ -115,52 +125,56 @@ export default function page() {
                                         </nav>
                                     </div>
                                     <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                                        <a href="#" className="group block flex-shrink-0">
-                                            <div className="flex items-center">
+                                        <div className="flex items-center justify-between">
+                                            <Link href="/profile" className='flex items-center'>
                                                 <div>
-                                                    <img
-                                                        className="inline-block h-10 w-10 rounded-full"
-                                                        src="https://avatars.githubusercontent.com/u/93455905?v=4"
-                                                        alt=""
+                                                    <Image
+                                                        className="inline-block h-10 w-10 rounded-full object-cover"
+                                                        src="/kiwi-profile.png"
+                                                        alt="kiwi"
+                                                        width={1408}
+                                                        height={1080}
                                                     />
                                                 </div>
                                                 <div className="ml-3">
-                                                    <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
-                                                        Jonathan Salvador
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                                                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{userLogged.email}</p>
+                                                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
                                                 </div>
-                                            </div>
-                                        </a>
+                                            </Link>
+                                            <button onClick={handleLogout} className='flex flex-end'>
+                                                <ArrowRightStartOnRectangleIcon className='w-auto h-6 text-red-400' />
+                                            </button>
+                                        </div>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>
                             <div className="w-14 flex-shrink-0" aria-hidden="true">
-                                {/* Force sidebar to shrink to fit close icon */}
                             </div>
                         </div>
                     </Dialog>
                 </Transition.Root>
-
-                {/* Static sidebar for desktop */}
                 <div className="hidden lg:flex lg:flex-shrink-0">
                     <div className="flex w-64 flex-col">
-                        {/* Sidebar component, swap this element with another sidebar if you like */}
                         <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-gray-100">
                             <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
-                                <div className="flex flex-shrink-0 items-center px-4">
-                                    <Image
-                                        className="h-10 w-auto"
-                                        src="/kiwi.png"
-                                        alt="kiwi"
-                                        width={100}
-                                        height={100}
-                                    />
+                                <div className="flex justify-center items-center px-4">
+                                    <Link
+                                        href="/"
+                                        className='cursor-pointer'
+                                    >
+                                        <Image
+                                            className="h-16 w-auto"
+                                            src="/kiwi.png"
+                                            alt="kiwi"
+                                            width={100}
+                                            height={100}
+                                        />
+                                    </Link>
                                 </div>
                                 <nav className="mt-5 flex-1" aria-label="Sidebar">
                                     <div className="space-y-1 px-2">
                                         {navigation.map((item) => (
-                                            <a
+                                            <Link
                                                 key={item.name}
                                                 href={item.href}
                                                 className={classNames(
@@ -178,27 +192,34 @@ export default function page() {
                                                     aria-hidden="true"
                                                 />
                                                 {item.name}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
                                 </nav>
                             </div>
                             <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                                <a href="#" className="group block w-full flex-shrink-0">
-                                    <div className="flex items-center">
-                                        <div>
-                                            <img
-                                                className="inline-block h-9 w-9 rounded-full"
-                                                src="https://avatars.githubusercontent.com/u/93455905?v=4"
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div className="ml-3">
-                                            <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Jonathan Salvador</p>
-                                            <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
-                                        </div>
+                                <div className="group block w-full flex-shrink-0">
+                                    <div className="flex items-center justify-between">
+                                        <Link href="/profile" className='flex items-center'>
+                                            <div>
+                                                <Image
+                                                    className="inline-block h-10 w-10 rounded-full object-cover"
+                                                    src="/kiwi-profile.png"
+                                                    alt="kiwi"
+                                                    width={1408}
+                                                    height={1080}
+                                                />
+                                            </div>
+                                            <div className="ml-3">
+                                                <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{userLogged.email}</p>
+                                                <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                                            </div>
+                                        </Link>
+                                        <button onClick={handleLogout} className='flex flex-end'>
+                                            <ArrowRightStartOnRectangleIcon className='w-auto h-6 text-red-400' />
+                                        </button>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -208,11 +229,11 @@ export default function page() {
                         <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-1.5">
                             <div>
                                 <Image
-                                    className="h-10 w-auto"
+                                    className="h-8 w-auto"
                                     src="/kiwi.png"
-                                    alt="kiwi"
-                                    width={100}
-                                    height={100}
+                                    alt="Your Company"
+                                    width={500}
+                                    height={500}
                                 />
                             </div>
                             <div>
@@ -229,19 +250,10 @@ export default function page() {
                     </div>
                     <div className="relative z-0 flex flex-1 overflow-hidden">
                         <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
-                            {/* Start main area*/}
                             <div className="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
-                                <div className="h-full rounded-lg border-2 border-dashed border-gray-200" />
+                                <Finances />
                             </div>
-                            {/* End main area */}
                         </main>
-                        <aside className="relative hidden w-96 flex-shrink-0 overflow-y-auto border-l border-gray-200 xl:flex xl:flex-col">
-                            {/* Start secondary column (hidden on smaller screens) */}
-                            <div className="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
-                                <div className="h-full rounded-lg border-2 border-dashed border-gray-200" />
-                            </div>
-                            {/* End secondary column */}
-                        </aside>
                     </div>
                 </div>
             </div>

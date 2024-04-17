@@ -4,8 +4,6 @@ import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import {
     Bars3Icon,
     MagnifyingGlassIcon,
-    QuestionMarkCircleIcon,
-    ShoppingBagIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline'
 import Image from 'next/image'

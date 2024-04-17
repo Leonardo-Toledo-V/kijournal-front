@@ -7,11 +7,13 @@ import {
     UserGroupIcon,
     XMarkIcon,
     ArchiveBoxIcon,
-    BanknotesIcon
+    BanknotesIcon,
+    ArrowRightStartOnRectangleIcon
 } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
 import Table from '@/components/Table'
+import { useRouter } from 'next/navigation'
 
 const navigation = [
     { name: 'Inventario', href: '/inventory', icon: ArchiveBoxIcon, current: true },
@@ -20,8 +22,23 @@ const navigation = [
 ]
 
 export default function page() {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
-    const userLogged = JSON.parse(localStorage.getItem("userLogged") || "{}");
+    const router = useRouter();
+
+    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
+
+    const user = localStorage.getItem("userLogged");
+
+    const userLogged = JSON.parse(user || "{}");
+
+    if (userLogged.email === undefined) { return <div>Debes iniciar sesión</div> }
+
+    const handleLogout = () => {
+        localStorage.removeItem("userLogged");
+        setTimeout(() => {
+            router.push("/")
+        }, 1000);
+    }
+
 
     return (
         <div className='h-screen'>
@@ -39,7 +56,6 @@ export default function page() {
                         >
                             <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
                         </Transition.Child>
-
                         <div className="fixed inset-0 z-40 flex">
                             <Transition.Child
                                 as={Fragment}
@@ -108,25 +124,28 @@ export default function page() {
                                         </nav>
                                     </div>
                                     <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                                        <a href="#" className="group block flex-shrink-0">
-                                            <div className="flex items-center">
-                                                <div>
-                                                    <Image
-                                                        className="inline-block h-10 w-10 rounded-full object-cover"
-                                                        src="/kiwi-profile.png"
-                                                        alt="kiwi"
-                                                        width={1408}
-                                                        height={1080}
-                                                    />
-                                                </div>
-                                                <div className="ml-3">
-                                                    <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
-                                                        {userLogged.email}
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
-                                                </div>
+                                        <div className="group block flex-shrink-0">
+                                            <div className="flex items-center justify-between">
+                                                <Link href="/profile" className='flex items-center'>
+                                                    <div>
+                                                        <Image
+                                                            className="inline-block h-10 w-10 rounded-full object-cover"
+                                                            src="/kiwi-profile.png"
+                                                            alt="kiwi"
+                                                            width={1408}
+                                                            height={1080}
+                                                        />
+                                                    </div>
+                                                    <div className="ml-3">
+                                                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{userLogged.email}</p>
+                                                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                                                    </div>
+                                                </Link>
+                                                <button onClick={handleLogout} className='flex flex-end'>
+                                                    <ArrowRightStartOnRectangleIcon className='w-auto h-6 text-red-400' />
+                                                </button>
                                             </div>
-                                        </a>
+                                        </div>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>
@@ -156,9 +175,9 @@ export default function page() {
                                 <nav className="mt-5 flex-1" aria-label="Sidebar">
                                     <div className="space-y-1 px-2">
                                         {navigation.map((item) => (
-                                            <a
-                                                key={item.name}
+                                            <Link
                                                 href={item.href}
+                                                key={item.name}
                                                 className={classNames(
                                                     item.current
                                                         ? 'bg-gray-200 text-gray-900'
@@ -174,29 +193,34 @@ export default function page() {
                                                     aria-hidden="true"
                                                 />
                                                 {item.name}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
                                 </nav>
                             </div>
                             <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                                <Link href="/profile" className="group block w-full flex-shrink-0">
-                                    <div className="flex items-center">
-                                        <div>
-                                            <Image
-                                                className="inline-block h-10 w-10 rounded-full object-cover"
-                                                src="/kiwi-profile.png"
-                                                alt="kiwi"
-                                                width={1408}
-                                                height={1080}
-                                            />
-                                        </div>
-                                        <div className="ml-3">
-                                            <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{userLogged.email}</p>
-                                            <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
-                                        </div>
+                                <div className="group block w-full flex-shrink-0">
+                                    <div className="flex items-center justify-between">
+                                        <Link href="/profile" className='flex items-center'>
+                                            <div>
+                                                <Image
+                                                    className="inline-block h-10 w-10 rounded-full object-cover"
+                                                    src="/kiwi-profile.png"
+                                                    alt="kiwi"
+                                                    width={1408}
+                                                    height={1080}
+                                                />
+                                            </div>
+                                            <div className="ml-3">
+                                                <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{userLogged.email}</p>
+                                                <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                                            </div>
+                                        </Link>
+                                        <button onClick={handleLogout} className='flex flex-end'>
+                                            <ArrowRightStartOnRectangleIcon className='w-auto h-6 text-red-400' />
+                                        </button>
                                     </div>
-                                </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -205,10 +229,12 @@ export default function page() {
                     <div className="lg:hidden">
                         <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-1.5">
                             <div>
-                                <img
+                                <Image
                                     className="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                                    src="/kiwi.png"
                                     alt="Your Company"
+                                    width={500}
+                                    height={500}
                                 />
                             </div>
                             <div>
