@@ -145,7 +145,7 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function page() {
+export default function HomePage() {
     const [open, setOpen] = useState(false)
 
     return (

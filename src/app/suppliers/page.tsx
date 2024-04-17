@@ -21,7 +21,7 @@ const navigation = [
     { name: 'Proovedores', href: '/suppliers', icon: UserGroupIcon, current: true },
 ]
 
-export default function page() {
+export default function SuppliersPage() {
     const router = useRouter();
 
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
