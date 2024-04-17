@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 
-
 interface Producto {
     id: number;
     producto: string;
@@ -18,7 +17,7 @@ export default function Table() {
     const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
 
     useEffect(() => {
-        const storedProductos = localStorage.getItem('productos');
+        const storedProductos = localStorage?.getItem('productos');
         if (storedProductos) {
             try {
                 const parsedProductos = JSON.parse(storedProductos);
@@ -34,7 +33,7 @@ export default function Table() {
 
     useEffect(() => {
         if (productos.length > 0) {
-            localStorage.setItem('productos', JSON.stringify(productos));
+            localStorage?.setItem('productos', JSON.stringify(productos));
         }
     }, [productos]);
 
@@ -118,7 +117,7 @@ export default function Table() {
     };
 
     const deleteAllProducts = () => {
-        localStorage.removeItem('productos');
+        localStorage?.removeItem('productos');
         setProductos([]);
         window.location.reload();
     }

@@ -18,7 +18,7 @@ export default function Finances() {
     const [selectedFinance, setSelectedFinance] = useState<Finance | null>(null);
 
     useEffect(() => {
-        const storedFinances = localStorage.getItem('finances');
+        const storedFinances = localStorage?.getItem('finances');
         if (storedFinances) {
             try {
                 const parsedFinances = JSON.parse(storedFinances);
@@ -33,7 +33,7 @@ export default function Finances() {
 
     useEffect(() => {
         if (finances.length > 0) {
-            localStorage.setItem('finances', JSON.stringify(finances));
+            localStorage?.setItem('finances', JSON.stringify(finances));
         }
     }, [finances]);
 
@@ -121,7 +121,7 @@ export default function Finances() {
     };
 
     const deleteAllFinances = () => {
-        localStorage.removeItem('finances');
+        localStorage?.removeItem('finances');
         setFinances([]);
         window.location.reload();
     }
