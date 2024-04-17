@@ -26,9 +26,12 @@ export default function FinancePage() {
 
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
 
-    const user = localStorage.getItem("userLogged");
+    const [userLogged, setUserLogged] = useState<any>({})
 
-    const userLogged = JSON.parse(user || "{}");
+    useEffect(() => {
+        const user = localStorage.getItem("userLogged");
+        setUserLogged(JSON.parse(user || "{}"));
+    }, [])
 
     if (userLogged.email === undefined) { return <div>Debes iniciar sesión</div> }
 

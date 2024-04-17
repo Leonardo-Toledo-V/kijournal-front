@@ -1,5 +1,5 @@
 'use client'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { classNames } from '@/utilities/classNames'
 import {
@@ -25,10 +25,12 @@ export default function InventoryPage() {
     const router = useRouter();
 
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
+    const [userLogged, setUserLogged] = useState<any>({})
 
-    const user = localStorage.getItem("userLogged");
-
-    const userLogged = JSON.parse(user || "{}");
+    useEffect(() => {
+        const user = localStorage.getItem("userLogged");
+        setUserLogged(JSON.parse(user || "{}"));
+    }, [])
 
     if (userLogged.email === undefined) { return <div>Debes iniciar sesión</div> }
 
